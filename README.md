@@ -1,84 +1,74 @@
-# Object Detection with YOLOv11 using Custom Dataset
+# Object Detection with YOLOv11
 
 ## Overview
-This project demonstrates how to train and evaluate an **Object Detection Model** using **YOLOv11** on a custom dataset annotated with **LabelImg**.
+This project focuses on object detection using YOLOv11. The model is trained to detect various objects, including animals, household items, and food categories. The dataset was annotated using LabelImg, and the YOLO model was trained to identify multiple classes accurately.
 
 ## Features
-- Train **YOLOv11** on a custom dataset
-- Annotate images using **LabelImg**
-- Evaluate model performance using metrics like **mAP, Precision, and Recall**
-- Deploy and test object detection on images and video streams
+- Object detection using YOLOv11
+- Custom dataset annotation with LabelImg
+- Detection of multiple object categories
+- Model training and evaluation
 
-## Prerequisites
-### **1. Install Dependencies**
-```bash
-pip install ultralytics opencv-python torch torchvision torchaudio matplotlib labelImg
-```
+## Detected Objects
+The trained model can detect the following objects:
+- Dog
+- Person
+- Cat
+- TV
+- Car
+- Meatballs
+- Marinara Sauce
+- Tomato Soup
+- Chicken Noodle Soup
+- French Onion Soup
+- Chicken Breast
+- Ribs
+- Pulled Pork
+- Hamburger
+- Cavity
+- Horse
+- Teddy Bear
+- Cellphone
 
-### **2. Clone YOLOv11 Repository**
-```bash
-git clone https://github.com/ultralytics/ultralytics.git
-cd ultralytics
-```
+## Tools & Technologies Used
+- **YOLOv11** for object detection
+- **LabelImg** for annotation
+- **Python** for scripting and model training
+- **OpenCV** for image processing
+- **TensorFlow/PyTorch** (depending on the implementation)
 
-### **3. Prepare the Dataset**
-1. **Collect Images**: Gather images relevant to the detection task.
-2. **Annotate with LabelImg**:
-   - Install LabelImg:  
-     ```bash
-     pip install labelImg
-     labelImg
-     ```
-   - Draw bounding boxes and save in **YOLO format** (`.txt` files).
-3. **Organize the Dataset**:
+## Installation & Setup
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/object-detection-yolov11.git
+   cd object-detection-yolov11
    ```
-   dataset/
-   ├── train/
-   │   ├── images/
-   │   │   ├── img1.jpg
-   │   │   ├── img2.jpg
-   │   └── labels/
-   │       ├── img1.txt
-   │       ├── img2.txt
-   ├── val/
-   │   ├── images/
-   │   └── labels/
-   └── data.yaml
+2. Install dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
+3. Annotate images using LabelImg and save in YOLO format.
+4. Train the YOLOv11 model using the collected dataset:
+   ```sh
+   python train.py --data dataset.yaml --epochs 50 --batch-size 16
+   ```
+5. Run inference on test images:
+   ```sh
+   python detect.py --source test_images/ --weights best.pt --conf 0.5
    ```
 
-### **4. Train the Model**
-```bash
-yolo task=detect mode=train model=yolov11n.pt data=dataset/data.yaml epochs=50 imgsz=640
-```
+## Results
+- Model trained with YOLOv11 achieved high accuracy in detecting objects.
+- Real-time object detection with minimal latency.
 
-### **5. Evaluate Model Performance**
-```bash
-yolo task=detect mode=val model=runs/detect/train/weights/best.pt data=dataset/data.yaml
-```
-
-### **6. Run Inference**
-#### **On an Image**
-```bash
-yolo task=detect mode=predict model=runs/detect/train/weights/best.pt source=path/to/image.jpg
-```
-#### **On a Video/Webcam**
-```bash
-yolo task=detect mode=predict model=runs/detect/train/weights/best.pt source=0
-```
-
-## Model Performance Metrics
-- **Precision & Recall**: Measures detection accuracy
-- **mAP (Mean Average Precision)**: Evaluates the model’s ability to detect objects correctly
-
-## Deployment
-Convert the trained model for optimized inference:
-```bash
-yolo export model=runs/detect/train/weights/best.pt format=onnx
-```
+## Future Improvements
+- Improve model accuracy with a larger dataset.
+- Fine-tune hyperparameters for better performance.
+- Deploy the model using Flask or FastAPI for real-time inference.
 
 ## Acknowledgments
-- **Ultralytics** for YOLOv11
-- **LabelImg** for annotation
+- YOLO community for continuous improvements.
+- Open-source contributors for LabelImg and dataset preparation.
 
 ## License
-This project is open-source under the MIT License.
+This project is licensed under the MIT License.
