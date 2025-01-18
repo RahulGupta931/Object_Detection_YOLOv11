@@ -1,4 +1,4 @@
-# Object Detection with YOLOv11
+#  Real-Time Object Detection with YOLOv11
 
 ## Overview
 This project focuses on object detection using YOLOv11. The model is trained to detect various objects, including animals, household items, and food categories. The dataset was annotated using LabelImg, and the YOLO model was trained to identify multiple classes accurately.
