@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YOLOv8 Person Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            min-height: 100vh;
+        }
+        .main-card {
+            max-width: 500px;
+            margin: 40px auto;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            border-radius: 18px;
+        }
+        .result-card {
+            max-width: 600px;
+            margin: 30px auto;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+        .spinner-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.7);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleFileInput() {
+            var source = document.querySelector('input[name="source"]:checked').value;
+            document.getElementById('imageInput').style.display = (source === 'image') ? 'block' : 'none';
+        }
+        window.onload = toggleFileInput;
+        function showSpinner() {
+            document.getElementById('spinnerOverlay').style.display = 'flex';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mt-5 mb-4">
+            <h1 class="fw-bold text-primary">YOLOv8 Person Detection</h1>
+            <p class="lead text-secondary">Detect people in images or live webcam using YOLOv8. Upload an image or use your webcam to get started!</p>
+        </div>
+        <div class="card main-card p-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data" onsubmit="showSpinner()">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Select Source:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="source" value="webcam" checked onclick="toggleFileInput()">
+                        <label class="form-check-label">Live Webcam</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="source" value="image" onclick="toggleFileInput()">
+                        <label class="form-check-label">Upload Image</label>
+                    </div>
+                </div>
+                <div class="mb-3" id="imageInput" style="display:none;">
+                    <label class="form-label">Choose Image:</label>
+                    <input type="file" name="image" accept="image/*" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-bold">Start Detection</button>
+            </form>
+        </div>
+        {% if result_img %}
+        <div class="card result-card mt-4">
+            <div class="card-header bg-primary text-white fw-semibold">Detection Result</div>
+            <img src="{{ url_for('result_img', filename=result_img) }}" class="card-img-bottom" alt="Result Image" style="border-radius: 0 0 18px 18px;">
+        </div>
+        {% endif %}
+    </div>
+    <div class="spinner-overlay" id="spinnerOverlay">
+        <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</body>
+</html> 
